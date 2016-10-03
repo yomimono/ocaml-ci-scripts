@@ -18,6 +18,7 @@ set -uex
 OCAML_VERSION=${OCAML_VERSION:-latest}
 OPAM_VERSION=${OPAM_VERSION:-1.2.2}
 OPAM_INIT=${OPAM_INIT:-true}
+OPAM_QUIET_INIT=${OPAM_QUIET_INIT:-true}
 OPAM_SWITCH=${OPAM_SWITCH:-system}
 
 # the base opam repository to use for bootstrapping and catch-all namespace
@@ -34,6 +35,11 @@ INSTALL_XQUARTZ=${INSTALL_XQUARTZ:-"true"}
 
 case "$OCAML_VERSION" in
     latest) OCAML_VERSION=4.02;;
+esac
+
+case "$OPAM_QUIET_INIT" in
+    false) OPAM_QUIET_INIT="" ;;
+    *) OPAM_QUIET_INIT="-q" ;;
 esac
 
 install_on_linux () {
@@ -126,7 +132,7 @@ export OPAMYES=1
 
 case $OPAM_INIT in
   true)
-      opam init -a "$BASE_REMOTE" --comp="$OPAM_SWITCH"
+      opam init -a "$BASE_REMOTE" "$OPAM_QUIET_INIT" --comp="$OPAM_SWITCH"
       eval $(opam config env)
       ;;
 esac

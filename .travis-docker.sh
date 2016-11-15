@@ -17,6 +17,7 @@ echo DEPOPTS="$DEPOPTS" >> env.list
 echo TESTS="$TESTS" >> env.list
 echo REVDEPS="$REVDEPS" >> env.list
 echo EXTRA_DEPS="$EXTRA_DEPS" >> env.list
+echo MODE="$MODE" >> env.list
 echo PRE_INSTALL_HOOK="$PRE_INSTALL_HOOK" >> env.list
 echo POST_INSTALL_HOOK="$POST_INSTALL_HOOK" >> env.list
 

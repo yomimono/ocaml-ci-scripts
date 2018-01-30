@@ -117,7 +117,7 @@ INSTALL_LOCAL=${INSTALL_LOCAL:-0}
 #    sudo apt-get -qq update
 #  fi
 
-  if [ "${INSTALL_LOCAL}" = 0 ] ; then
+  if [ "${INSTALL_LOCAL}" != 0 ] ; then
     echo -en "travis_fold:start:build.ocaml\r"
     echo "Building a local OCaml; this may take a few minutes..."
     wget "http://caml.inria.fr/pub/distrib/ocaml-${OCAML_FULL_VERSION%.*}/ocaml-$OCAML_FULL_VERSION.tar.gz"

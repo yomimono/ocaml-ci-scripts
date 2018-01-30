@@ -78,44 +78,46 @@ install_on_linux () {
        exit 1 ;;
   esac
 
-  sudo add-apt-repository --yes ppa:${ppa}
-  sudo apt-get update -qq
-  if [ "${INSTALL_LOCAL:=0}" = 0 ] ; then
-    sudo apt-get install -y \
-       "$(full_apt_version ocaml $OCAML_VERSION)" \
-       "$(full_apt_version ocaml-base $OCAML_VERSION)" \
-       "$(full_apt_version ocaml-native-compilers $OCAML_VERSION)" \
-       "$(full_apt_version ocaml-compiler-libs $OCAML_VERSION)" \
-       "$(full_apt_version ocaml-interp $OCAML_VERSION)" \
-       "$(full_apt_version ocaml-base-nox $OCAML_VERSION)" \
-       "$(full_apt_version ocaml-nox $OCAML_VERSION)" \
-       "$(full_apt_version camlp4 $OCAML_VERSION)" \
-       "$(full_apt_version camlp4-extra $OCAML_VERSION)" \
-       jq \
-       opam
-  else
-    sudo apt-get install -y jq opam
-  fi
+INSTALL_LOCAL=${INSTALL_LOCAL:-0}
 
-  TRUSTY="deb mirror://mirrors.ubuntu.com/mirrors.txt trusty main restricted universe"
+#  sudo add-apt-repository --yes ppa:${ppa}
+#  sudo apt-get update -qq
+#  if [ "${INSTALL_LOCAL:=0}" = 0 ] ; then
+#    sudo apt-get install -y \
+#       "$(full_apt_version ocaml $OCAML_VERSION)" \
+#       "$(full_apt_version ocaml-base $OCAML_VERSION)" \
+#       "$(full_apt_version ocaml-native-compilers $OCAML_VERSION)" \
+#       "$(full_apt_version ocaml-compiler-libs $OCAML_VERSION)" \
+#       "$(full_apt_version ocaml-interp $OCAML_VERSION)" \
+#       "$(full_apt_version ocaml-base-nox $OCAML_VERSION)" \
+#       "$(full_apt_version ocaml-nox $OCAML_VERSION)" \
+#       "$(full_apt_version camlp4 $OCAML_VERSION)" \
+#       "$(full_apt_version camlp4-extra $OCAML_VERSION)" \
+#       jq \
+#       opam
+#  else
+#    sudo apt-get install -y jq opam
+#  fi
+#
+#  TRUSTY="deb mirror://mirrors.ubuntu.com/mirrors.txt trusty main restricted universe"
+#
+#  if [ "$UPDATE_GCC_BINUTILS" != "0" ] ; then
+#    echo "installing a recent gcc and binutils (mainly to get mirage-entropy-xen working!)"
+#    sudo add-apt-repository "${TRUSTY}"
+#    sudo add-apt-repository --yes ppa:ubuntu-toolchain-r/test
+#    sudo apt-get -qq update
+#    sudo apt-get install -y gcc-4.8
+#    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 90
+#    sudo add-apt-repository -r "${TRUSTY}"
+#  fi
+#
+#  if [ "$UBUNTU_TRUSTY" != "0" ] ; then
+#    echo "Adding Ubuntu Trusty mirrors"
+#    sudo add-apt-repository "${TRUSTY}"
+#    sudo apt-get -qq update
+#  fi
 
-  if [ "$UPDATE_GCC_BINUTILS" != "0" ] ; then
-    echo "installing a recent gcc and binutils (mainly to get mirage-entropy-xen working!)"
-    sudo add-apt-repository "${TRUSTY}"
-    sudo add-apt-repository --yes ppa:ubuntu-toolchain-r/test
-    sudo apt-get -qq update
-    sudo apt-get install -y gcc-4.8
-    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 90
-    sudo add-apt-repository -r "${TRUSTY}"
-  fi
-
-  if [ "$UBUNTU_TRUSTY" != "0" ] ; then
-    echo "Adding Ubuntu Trusty mirrors"
-    sudo add-apt-repository "${TRUSTY}"
-    sudo apt-get -qq update
-  fi
-
-  if [ "$INSTALL_LOCAL" != 0 ] ; then
+  if [ "${INSTALL_LOCAL}" = 0 ] ; then
     echo -en "travis_fold:start:build.ocaml\r"
     echo "Building a local OCaml; this may take a few minutes..."
     wget "http://caml.inria.fr/pub/distrib/ocaml-${OCAML_FULL_VERSION%.*}/ocaml-$OCAML_FULL_VERSION.tar.gz"

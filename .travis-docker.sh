@@ -45,7 +45,7 @@ fi
 echo RUN opam update -u -y >> Dockerfile
 echo RUN opam depext -uiy travis-opam >> Dockerfile
 echo RUN cp '~/.opam/$(opam switch show)/bin/ci-opam' "~/" >> Dockerfile
-echo RUN opam remove -a travis-opam >> Dockerfile
+echo RUN opam remove -y -a travis-opam >> Dockerfile
 echo RUN mv "~/ci-opam" '~/.opam/$(opam switch show)/bin/ci-opam' >> Dockerfile
 echo VOLUME /repo >> Dockerfile
 echo WORKDIR /repo >> Dockerfile

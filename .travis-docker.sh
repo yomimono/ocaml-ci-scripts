@@ -43,7 +43,7 @@ if [ $fork_user != $default_user -o $fork_branch != $default_branch ]; then
 fi
 
 echo RUN opam update -u -y >> Dockerfile
-echo RUN opam depext -ui travis-opam >> Dockerfile
+echo RUN opam depext -uiy travis-opam >> Dockerfile
 echo RUN cp '~/.opam/$(opam switch show)/bin/ci-opam' "~/" >> Dockerfile
 echo RUN opam remove -a travis-opam >> Dockerfile
 echo RUN mv "~/ci-opam" '~/.opam/$(opam switch show)/bin/ci-opam' >> Dockerfile

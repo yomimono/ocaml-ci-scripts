@@ -24,7 +24,8 @@ echo POST_INSTALL_HOOK="$POST_INSTALL_HOOK" >> env.list
 echo $EXTRA_ENV >> env.list
 
 # build a local image to trigger any ONBUILDs
-echo FROM ${hub_user}/opam:${DISTRO}_ocaml-${OCAML_VERSION} > Dockerfile
+# echo FROM ${hub_user}/opam:${DISTRO}_ocaml-${OCAML_VERSION} > Dockerfile
+echo FROM ${hub_user}/opam2:${DISTRO} > Dockerfile
 echo WORKDIR /home/opam/opam-repository >> Dockerfile
 
 if [ -n "$BASE_REMOTE" ]; then
@@ -43,6 +44,8 @@ if [ $fork_user != $default_user -o $fork_branch != $default_branch ]; then
 fi
 
 echo RUN opam update -u -y >> Dockerfile
+echo RUN opam sw create ${OCAML_VERSION} >> Dockerfile #TODO: this is probably wrong for a sw that already exists
+echo RUN opam install -y depext >> Dockerfile
 echo RUN opam depext -uiy travis-opam >> Dockerfile
 echo RUN cp '~/.opam/$(opam switch show)/bin/ci-opam' "~/" >> Dockerfile
 echo RUN opam remove -y -a travis-opam >> Dockerfile

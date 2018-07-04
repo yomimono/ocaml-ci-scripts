@@ -21,6 +21,7 @@ echo REVDEPS="$REVDEPS" >> env.list
 echo EXTRA_DEPS="$EXTRA_DEPS" >> env.list
 echo PRE_INSTALL_HOOK="$PRE_INSTALL_HOOK" >> env.list
 echo POST_INSTALL_HOOK="$POST_INSTALL_HOOK" >> env.list
+echo VERBOSE_UPDATES="$VERBOSE_UPDATES" >> env.list
 echo $EXTRA_ENV >> env.list
 
 # build a local image to trigger any ONBUILDs
@@ -32,7 +33,7 @@ if [ -n "$BASE_REMOTE" ]; then
     echo "RUN git remote set-url origin ${BASE_REMOTE} &&\
         git fetch origin && git reset --hard origin/master"  >> Dockerfile
 else
-    echo RUN git pull origin master >> Dockerfile
+    echo RUN git pull -q origin master >> Dockerfile
 fi
 
 
@@ -43,7 +44,7 @@ if [ $fork_user != $default_user -o $fork_branch != $default_branch ]; then
          >> Dockerfile
 fi
 
-echo RUN opam update -u -y >> Dockerfile
+echo 'RUN opam update -q -u -y >/dev/null' >> Dockerfile
 echo RUN opam sw create ${OCAML_VERSION} >> Dockerfile #TODO: this is probably wrong for a sw that already exists
 echo RUN opam install -y depext >> Dockerfile
 echo RUN opam depext -uiy travis-opam >> Dockerfile
